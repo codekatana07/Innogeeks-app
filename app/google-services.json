@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "185935668142",
+    "project_id": "innogeeks2024",
+    "storage_bucket": "innogeeks2024.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185935668142:android:1d7a980f45517317f09e3f",
+        "android_client_info": {
+          "package_name": "edu.kiet.innogeeks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMNE3xl-1Pbcb-rEefkkdx9j7B8p9hWHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
