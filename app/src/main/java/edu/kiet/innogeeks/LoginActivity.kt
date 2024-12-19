@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-j
+
         signupRedirectText.setOnClickListener {
             startActivity(
                 Intent(
