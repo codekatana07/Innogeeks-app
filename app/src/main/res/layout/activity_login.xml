@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@drawable/screenbginnogeeks"
     tools:context=".LoginActivity">
 
     <ImageView
@@ -44,7 +44,9 @@
         android:layout_margin="16dp"
         app:cardBackgroundColor="#1A1A1A"
         app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+        app:cardElevation="8dp"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
