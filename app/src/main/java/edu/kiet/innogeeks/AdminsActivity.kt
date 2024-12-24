@@ -49,7 +49,7 @@ class AdminsActivity : AppCompatActivity() {
 
         val firebaseAuth = FirebaseAuth.getInstance()
         val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
-        val database = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        val database = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
 
         firebaseUser?.let { user ->
             val userID = user.uid

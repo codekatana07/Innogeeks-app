@@ -26,7 +26,7 @@ class EnrolStudentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enroll_student)
 
-        val database = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        val database = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
         val myRef = database.getReference("students")
 
         recyclerView = findViewById(R.id.listView) // Initialize RecyclerView
@@ -101,7 +101,7 @@ class EnrolStudentActivity : AppCompatActivity() {
         val spinner: Spinner = findViewById(R.id.spinner_grade)
         val selectedGrade = spinner.selectedItem.toString()
 
-        val studentsRef = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("students")
+        val studentsRef = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/").getReference("students")
 
         // Update selected students' grades in the database
         for (stdID in checkedIDs) {

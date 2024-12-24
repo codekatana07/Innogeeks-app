@@ -53,7 +53,7 @@ class TeachersActivity : AppCompatActivity() {
         // Check if the user is logged in
         if (firebaseUser != null) {
             val userID = firebaseUser.uid
-            val database = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+            val database = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
             val myRef = database.getReference("users").child(userID)
 
             myRef.addListenerForSingleValueEvent(object : ValueEventListener {

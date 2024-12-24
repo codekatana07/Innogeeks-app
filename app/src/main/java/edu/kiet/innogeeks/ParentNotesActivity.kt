@@ -79,7 +79,7 @@ class ParentNotesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_parent_notes)
         currentDate = getCurrentDate()
 
-        database = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        database = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
         val firebaseAuth = FirebaseAuth.getInstance()
         val firebaseUser = firebaseAuth.currentUser
 

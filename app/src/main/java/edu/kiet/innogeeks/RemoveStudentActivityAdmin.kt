@@ -27,7 +27,7 @@ class RemoveStudentActivityAdmin : AppCompatActivity() {
         recyclerView = findViewById(R.id.listView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val database = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        val database = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
         val myRef = database.getReference("students")
         val gradeRef = database.getReference("Classes")
 
@@ -103,7 +103,7 @@ class RemoveStudentActivityAdmin : AppCompatActivity() {
 
     fun remove(view: View) {
         checkedIDs = adapter.getCheckedIDs()
-        val studentsRef = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        val studentsRef = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
             .getReference("students")
 
         for (stdID in checkedIDs) {

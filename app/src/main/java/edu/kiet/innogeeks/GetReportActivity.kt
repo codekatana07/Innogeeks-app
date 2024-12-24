@@ -160,7 +160,7 @@ class GetReportActivity : AppCompatActivity() {
             add("Commerce")
         }
 
-        database = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        database = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
 
         presentSpinner = findViewById(R.id.spinner_present)
         gradeSpinner = findViewById(R.id.spinner_grade)
