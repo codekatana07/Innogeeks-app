@@ -24,7 +24,7 @@ class RemoveStudentTeacherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_remove_student_teacher)
 
-        val database = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        val database = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
         val studentsRef = database.getReference("students")
         val gradeRef = database.getReference("Classes")
 
@@ -98,7 +98,7 @@ class RemoveStudentTeacherActivity : AppCompatActivity() {
 
     fun remove(view: View) {
         checkedIDs = adapter.getCheckedIDs()
-        val studentsRef = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        val studentsRef = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
             .getReference("students")
 
         for (studentID in checkedIDs) {

@@ -22,7 +22,7 @@ class AddApproveStudentActivityAdmin : AppCompatActivity() {
 
     fun remove(view: View?) {
         checkedIDs = adapter.getCheckedIDs()
-        val studentsRef = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        val studentsRef = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
             .getReference("students")
 
         for (stdID in checkedIDs) {
@@ -48,7 +48,7 @@ class AddApproveStudentActivityAdmin : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_approve_add_studnet)
 
-        val database = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        val database = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
         val studentsRef = database.getReference("students")
         val gradeRef = database.getReference("Classes")
 

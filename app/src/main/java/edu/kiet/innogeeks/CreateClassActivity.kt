@@ -31,7 +31,7 @@ class CreateClassActivity : AppCompatActivity() {
         gradeName = findViewById(R.id.editTextGradeName)
 
         storageReference = FirebaseStorage.getInstance().reference
-        database = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        database = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
 
         saveBtn.setOnClickListener {
             saveGrade()

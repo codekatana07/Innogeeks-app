@@ -24,7 +24,7 @@ fun storeFCMToken() {
                 val token = task.result
 
                 // Store the FCM token in Realtime Database
-                val tokensRef = FirebaseDatabase.getInstance("https://attendme-644ac-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users")
+                val tokensRef = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/").getReference("users")
                 val query = tokensRef.orderByChild("userID").equalTo(userID)
 
                 query.addListenerForSingleValueEvent(object : ValueEventListener {
