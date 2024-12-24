@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Patterns
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -25,7 +24,12 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginButton: Button
     private lateinit var signupRedirectText: TextView
     private lateinit var imageAnimation: ImageView
-    private val images = arrayOf(R.drawable.google,R.drawable.edit)
+    private val images = arrayOf(
+        R.drawable.img,
+        R.drawable.img_1,
+        R.drawable.img_2,
+        R.drawable.img_3,
+        )
 
     private var currentImageIndex = 0
     private val delay = 1500L // 2 seconds delay
@@ -69,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        imageAnimation =findViewById(R.id.imageView)
+        imageAnimation =findViewById(R.id.animation)
         handler.post(imageSwitcher)
 
         auth = FirebaseAuth.getInstance()
