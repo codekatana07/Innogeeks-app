@@ -90,12 +90,29 @@ class LoginActivity : AppCompatActivity() {
                 if (pass.isNotEmpty()) {
                     auth.signInWithEmailAndPassword(email, pass)
                         .addOnSuccessListener {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "Login Successful",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            launchMainActivity()
+                            val currentUser = auth.currentUser
+                            if (currentUser != null) {
+                                if(currentUser.email == "rishiarora2705@gmail.com"){
+                                    Toast.makeText(
+                                        this@LoginActivity,
+                                        "Login Successful",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    val intent = Intent(
+                                        this@LoginActivity,
+                                        AdminsActivity::class.java
+                                    )
+                                    startActivity(intent)
+                                    finish()
+                                }else{
+                                    Toast.makeText(
+                                        this@LoginActivity,
+                                        "Login Successful",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    launchMainActivity()
+                                }
+                            }
                         }.addOnFailureListener {
                             Toast.makeText(this@LoginActivity, "Login Failed", Toast.LENGTH_SHORT)
                                 .show()
