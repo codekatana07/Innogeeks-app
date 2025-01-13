@@ -18,13 +18,35 @@
         <activity
             android:name=".MarkAttendanceActivity"
             android:exported="false" />
-        <activity android:name=".EnrolStudentActivity"
+        <activity
+            android:name=".AdminsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EnrolStudentActivity"
             android:exported="false"/>
         <activity
             android:name=".TeachersActivity"
             android:exported="false" />
         <activity
+            android:name=".CreateClassActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddTeacherActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemoveStudentActivityAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".AddStudentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddApproveStudentActivityAdmin"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemoveApproveStudentActivityAdmin"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

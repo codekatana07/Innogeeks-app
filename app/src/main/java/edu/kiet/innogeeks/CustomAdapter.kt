@@ -13,10 +13,9 @@ class CustomAdapter(
     private val mContext: Context
 ) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
-    private val checkedIDs: ArrayList<String> = ArrayList()  // List of selected student IDs
+    private val checkedIDs = HashSet<String>()
     private var onItemClickListener: OnItemClickListener? = null
 
-    // Define an interface for click events
     interface OnItemClickListener {
         fun onItemClick(position: Int)
     }
@@ -26,49 +25,58 @@ class CustomAdapter(
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val txtName: TextView = view.findViewById(R.id.txtName)
-        val checkBox: CheckBox = view.findViewById(R.id.checkBox)
+        val txtName: TextView = view.findViewById(R.id.txtname)
+        val checkBox: CheckBox = view.findViewById(R.id.checkbox)
 
         init {
-            view.setOnClickListener {
-                // Notify the activity or fragment when an item is clicked
-                onItemClickListener?.onItemClick(adapterPosition)
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClickListener?.onItemClick(position)
+                }
             }
-        }
-    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_item, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = dataSet[position]
-        holder.txtName.text = item.stdName
-        holder.checkBox.isChecked = item.assigned
-
-        // Set a tag for position tracking
-        holder.checkBox.tag = position
-
-        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-            val checkboxPosition = holder.adapterPosition
-            if (checkboxPosition != RecyclerView.NO_POSITION) {
-                val studentID = dataSet[checkboxPosition].stdID
-
-                if (isChecked) {
-                    checkedIDs.add(studentID.toString()) // Add ID to selected list
-                } else {
-                    checkedIDs.remove(studentID) // Remove ID from selected list
+            checkBox.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val student = dataSet[position]
+                    if (checkBox.isChecked) {
+                        checkedIDs.add(student.stdID.toString())
+                    } else {
+                        checkedIDs.remove(student.stdID)
+                    }
                 }
             }
         }
     }
 
-    override fun getItemCount(): Int {
-        return dataSet.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.row_item, parent, false)
+        return ViewHolder(view)
     }
 
-    fun getCheckedIDs(): ArrayList<String> {
-        return checkedIDs
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val student = dataSet[position]
+        holder.txtName.text = student.stdName
+
+        holder.checkBox.setOnCheckedChangeListener(null)
+        holder.checkBox.isChecked = student.assigned
+
+        if (student.assigned) {
+            checkedIDs.add(student.stdID.toString())
+        } else {
+            checkedIDs.remove(student.stdID)
+        }
+    }
+
+    override fun getItemCount(): Int = dataSet.size
+
+    fun getCheckedIDs(): ArrayList<String> = ArrayList(checkedIDs)
+
+    fun updateDataSet(newDataSet: List<Student>) {
+        dataSet.clear()
+        dataSet.addAll(newDataSet)
+        notifyDataSetChanged()
     }
 }

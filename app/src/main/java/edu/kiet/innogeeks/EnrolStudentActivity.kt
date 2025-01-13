@@ -10,9 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
-import edu.kiet.innogeeks.CustomAdapter
-import edu.kiet.innogeeks.R
-import edu.kiet.innogeeks.Student
 
 class EnrolStudentActivity : AppCompatActivity() {
 

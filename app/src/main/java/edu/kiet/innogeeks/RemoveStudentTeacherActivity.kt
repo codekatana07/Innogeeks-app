@@ -29,7 +29,7 @@ class RemoveStudentTeacherActivity : AppCompatActivity() {
         val gradeRef = database.getReference("Classes")
 
         gradeList = ArrayList()
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(R.id.r1)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         adapter = CustomAdapter(studentToDisplay, applicationContext)

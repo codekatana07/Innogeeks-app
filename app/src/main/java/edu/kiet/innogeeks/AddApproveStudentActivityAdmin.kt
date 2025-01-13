@@ -5,10 +5,10 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ListAdapter
-import android.widget.ListView
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import java.util.ArrayList
 
@@ -16,12 +16,11 @@ class AddApproveStudentActivityAdmin : AppCompatActivity() {
 
     private lateinit var adapter: CustomAdapter
     private val studentToDisplay = ArrayList<Student>()
-    private lateinit var listView: ListView
-    private lateinit var checkedIDs: ArrayList<String>
+    private lateinit var recyclerView: RecyclerView
     private val gradeList = ArrayList<String?>()
 
     fun remove(view: View?) {
-        checkedIDs = adapter.getCheckedIDs()
+        val checkedIDs = adapter.getCheckedIDs()
         val studentsRef = FirebaseDatabase.getInstance("https://innogeeks2024-default-rtdb.firebaseio.com/")
             .getReference("students")
 
@@ -52,7 +51,21 @@ class AddApproveStudentActivityAdmin : AppCompatActivity() {
         val studentsRef = database.getReference("students")
         val gradeRef = database.getReference("Classes")
 
-        listView = findViewById(R.id.listView)
+        // Initialize RecyclerView
+        recyclerView = findViewById(R.id.listView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        // Initialize adapter
+        adapter = CustomAdapter(studentToDisplay, applicationContext)
+        recyclerView.adapter = adapter
+
+        adapter.setOnItemClickListener(object : CustomAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val student = studentToDisplay[position]
+                student.assigned = !student.assigned
+                adapter.notifyItemChanged(position)
+            }
+        })
 
         // Fetch grade list
         gradeRef.addValueEventListener(object : ValueEventListener {
@@ -89,15 +102,6 @@ class AddApproveStudentActivityAdmin : AppCompatActivity() {
                 // Do nothing
             }
         }
-
-        // Initialize adapter and ListView
-        adapter = CustomAdapter(studentToDisplay, applicationContext)
-        listView.adapter = adapter as ListAdapter
-        listView.setOnItemClickListener { _, _, position, _ ->
-            val student = studentToDisplay[position]
-            student.assigned = !student.assigned
-            adapter.notifyDataSetChanged()
-        }
     }
 
     private fun fetchStudents(studentsRef: DatabaseReference, grade: String) {
@@ -105,9 +109,9 @@ class AddApproveStudentActivityAdmin : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 studentToDisplay.clear()
                 for (child in dataSnapshot.children) {
-                    val name = child.child("name").getValue(String::class.java)?: return
+                    val name = child.child("name").getValue(String::class.java) ?: continue
                     val assigned = child.child("assigned").getValue(Boolean::class.java) ?: false
-                    val studentID = child.child("studentID").getValue(String::class.java)?: return
+                    val studentID = child.child("studentID").getValue(String::class.java) ?: continue
                     val studentGrade = child.child("grade").getValue(String::class.java)
                     val approved = child.child("approved").getValue(Boolean::class.java) ?: false
                     val currentStudent = child.child("currentStudent").getValue(Boolean::class.java) ?: false
