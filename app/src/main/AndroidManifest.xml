@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".FirebaseApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,9 +16,17 @@
         <activity
             android:name=".RemoveStudentTeacherActivity"
             android:exported="false" />
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".MarkAttendanceActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".AdminsActivity"
             android:exported="false" />
@@ -47,6 +56,12 @@
             android:exported="false" />
         <activity
             android:name=".RemoveApproveStudentActivityAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".ParentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParentNotesActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
