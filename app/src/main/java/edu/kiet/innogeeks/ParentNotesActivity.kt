@@ -1,9 +1,7 @@
 package edu.kiet.innogeeks
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -18,10 +16,11 @@ class ParentNotesActivity : AppCompatActivity() {
 
     private lateinit var nameLabel: TextView
     private lateinit var gradeLabel: TextView
+    private lateinit var currentdate: TextView
+    private lateinit var currentDate: String
     private lateinit var textReason: EditText
     private lateinit var dateButton: Button
     private lateinit var submitButton: Button
-    private lateinit var selectedDate: String
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
 
@@ -37,16 +36,20 @@ class ParentNotesActivity : AppCompatActivity() {
         nameLabel = findViewById(R.id.labelStdName)
         gradeLabel = findViewById(R.id.labelGrade)
         textReason = findViewById(R.id.editTextTextMultiLine)
-        dateButton = findViewById(R.id.dateButton)
+//        dateButton = findViewById(R.id.dateButton)
+        currentdate = findViewById(R.id.editTextDate)
         submitButton = findViewById(R.id.btnSubmit)
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        currentDate = sdf.format(Date())
+        currentdate.text = currentDate
 
         // Get student details
         getStudentDetails()
 
-        // Set up date picker
-        dateButton.setOnClickListener {
-            showDatePicker()
-        }
+//        // Set up date picker
+//        dateButton.setOnClickListener {
+//            showDatePicker()
+//        }
 
         // Set up submit button
         submitButton.setOnClickListener {
@@ -68,48 +71,48 @@ class ParentNotesActivity : AppCompatActivity() {
             }
     }
 
-    private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog = DatePickerDialog(
-            this,
-            { _, selectedYear, selectedMonth, selectedDay ->
-                val selectedCalendar = Calendar.getInstance()
-                selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
-
-                val today = Calendar.getInstance()
-                val nextWeek = Calendar.getInstance()
-                nextWeek.add(Calendar.DAY_OF_MONTH, 7)
-
-                when {
-                    selectedCalendar.before(today) -> {
-                        Toast.makeText(this, "Cannot select past dates", Toast.LENGTH_SHORT).show()
-                    }
-                    selectedCalendar.after(nextWeek) -> {
-                        Toast.makeText(this, "Cannot select dates beyond next week", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-                        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                        selectedDate = sdf.format(selectedCalendar.time)
-                        dateButton.text = selectedDate
-                    }
-                }
-            },
-            year,
-            month,
-            day
-        )
-        datePickerDialog.show()
-    }
+//    private fun showDatePicker() {
+//        val calendar = Calendar.getInstance()
+//        val year = calendar.get(Calendar.YEAR)
+//        val month = calendar.get(Calendar.MONTH)
+//        val day = calendar.get(Calendar.DAY_OF_MONTH)
+//
+//        val datePickerDialog = DatePickerDialog(
+//            this,
+//            { _, selectedYear, selectedMonth, selectedDay ->
+//                val selectedCalendar = Calendar.getInstance()
+//                selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
+//
+//                val today = Calendar.getInstance()
+//                val nextWeek = Calendar.getInstance()
+//                nextWeek.add(Calendar.DAY_OF_MONTH, 7)
+//
+//                when {
+//                    selectedCalendar.before(today) -> {
+//                        Toast.makeText(this, "Cannot select past dates", Toast.LENGTH_SHORT).show()
+//                    }
+//                    selectedCalendar.after(nextWeek) -> {
+//                        Toast.makeText(this, "Cannot select dates beyond next week", Toast.LENGTH_SHORT).show()
+//                    }
+//                    else -> {
+//                        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+//                        selectedDate = sdf.format(selectedCalendar.time)
+//                        dateButton.text = selectedDate
+//                    }
+//                }
+//            },
+//            year,
+//            month,
+//            day
+//        )
+//        datePickerDialog.show()
+//    }
 
     private fun submitReason() {
-        if (!::selectedDate.isInitialized) {
-            Toast.makeText(this, "Please select a date first", Toast.LENGTH_SHORT).show()
-            return
-        }
+//        if (!::selectedDate.isInitialized) {
+//            Toast.makeText(this, "Please select a date first", Toast.LENGTH_SHORT).show()
+//            return
+//        }
 
         val reason = textReason.text.toString()
         if (reason.isEmpty()) {
@@ -127,14 +130,13 @@ class ParentNotesActivity : AppCompatActivity() {
                 
                 // Create new map with existing reasons plus new one
                 val updatedReasons = existingReasons.toMutableMap()
-                updatedReasons[selectedDate] = reason
+                updatedReasons[currentdate.text.toString()] = reason
 
                 // Update Firestore with the merged map
                 studentRef.update("reasonsOfAbsence", updatedReasons)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Reason submitted successfully", Toast.LENGTH_SHORT).show()
                         textReason.text.clear()
-                        dateButton.text = "Select Date"
                     }
                     .addOnFailureListener { e ->
                         Toast.makeText(this, "Failed to submit reason", Toast.LENGTH_SHORT).show()

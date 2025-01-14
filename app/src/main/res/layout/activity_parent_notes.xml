@@ -57,31 +57,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelStdName" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:fontFamily="@font/cabin"
-        android:hint="DD/MM/YYYY"
-        android:inputType="date"
+        android:text="DD/MM/YYYY"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/labelDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/labelDate"
         app:layout_constraintTop_toTopOf="@+id/labelDate" />
 
-    <Button
-        android:id="@+id/dateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/lightGreen"
-        android:fontFamily="@font/cabin"
-        android:text="Select Date"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/editTextDate"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+<!--    <Button-->
+<!--        android:id="@+id/dateButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:backgroundTint="@color/lightGreen"-->
+<!--        android:fontFamily="@font/cabin"-->
+<!--        android:text="Select Date"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/editTextDate"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/editTextDate" />-->
 
     <EditText
         android:id="@+id/editTextTextMultiLine"
@@ -98,7 +97,7 @@
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateButton" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
 
     <Button
         android:id="@+id/btnSubmit"
