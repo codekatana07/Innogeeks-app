@@ -14,12 +14,18 @@
         android:background="@drawable/bg_view"/>
 
     <GridLayout
-        android:layout_width="371dp"
-        android:layout_height="550dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/top_view"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="-80dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginRight="24dp"
+        android:layout_marginBottom="262dp"
         android:columnCount="2"
         android:rowCount="3">
 
@@ -51,8 +57,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
                     android:text="Enroll Students"
                     android:textAlignment="center"
                     android:textColor="#0f0f0f"
@@ -90,8 +96,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Mark Attendance"
                     android:layout_marginTop="10dp"
+                    android:text="Mark Attendance"
                     android:textAlignment="center"
                     android:textColor="#0f0f0f"
                     android:textSize="18sp"
@@ -128,8 +134,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Remove Students"
                     android:layout_marginTop="10dp"
+                    android:text="Remove Students"
                     android:textAlignment="center"
                     android:textColor="#0f0f0f"
                     android:textSize="18sp"

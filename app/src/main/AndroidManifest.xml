@@ -16,6 +16,14 @@
         <activity
             android:name=".RemoveStudentTeacherActivity"
             android:exported="false" />
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".MarkAttendanceActivity"
             android:exported="false" />
@@ -48,6 +56,12 @@
             android:exported="false" />
         <activity
             android:name=".RemoveApproveStudentActivityAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".ParentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParentNotesActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
