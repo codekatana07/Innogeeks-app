@@ -1,297 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    tools:context=".AddStudentActivity">
+    android:background="@drawable/bkg_gradient">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_5"
+        app:layout_constraintBottom_toTopOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="52dp"
+        app:cardBackgroundColor="#1E1E1E"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView2"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/cabin"
-            android:text="Add a New Student"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView2">
-
-            <!-- Name -->
-            <EditText
-                android:id="@+id/editTextName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Name"
-                android:autofillHints="" />
-
-            <!-- Address -->
-            <EditText
-                android:id="@+id/editTextAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Address"
-                android:autofillHints="" />
-
-            <!-- Father's Name -->
-            <EditText
-                android:id="@+id/editTextFatherName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Father's Name"
-                android:autofillHints="" />
-
-            <!-- Father's Mobile Phone Number -->
-            <EditText
-                android:id="@+id/editTextFatherMobile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Father's Mobile Phone Number"
-                android:inputType="phone"
-                android:autofillHints="" />
-
-            <!-- Father's Occupation -->
-            <EditText
-                android:id="@+id/editTextFatherOccupation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Father's Occupation"
-                android:autofillHints="" />
-
-            <!-- Father's Email Address -->
-            <EditText
-                android:id="@+id/editTextFatherEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Father's Email Address"
-                android:inputType="textEmailAddress"
-                android:autofillHints="" />
-
-            <!-- Mother's Name -->
-            <EditText
-                android:id="@+id/editTextMotherName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Mother's Name"
-                android:autofillHints="" />
-
-            <!-- Mother's Mobile Phone Number -->
-            <EditText
-                android:id="@+id/editTextMotherMobile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:autofillHints=""
-                android:fontFamily="@font/cabin"
-                android:hint="Mother's Mobile Phone Number"
-                android:inputType="phone"/>
-
-            <!-- Mother's Occupation -->
-            <EditText
-                android:id="@+id/editTextMotherOccupation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Mother's Occupation"
-                android:autofillHints="" />
-
-            <!-- Mother's Email Address -->
-            <EditText
-                android:id="@+id/editTextMotherEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Mother's Email Address"
-                android:inputType="textEmailAddress"
-                android:autofillHints="" />
-
-            <!-- Guardin's Name -->
-            <EditText
-                android:id="@+id/editTextGuardianName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Guardian's Name"
-                android:autofillHints="" />
-
-            <!--Guardian's Mobile Phone Number -->
-            <EditText
-                android:id="@+id/editTextGuardianMobile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:autofillHints=""
-                android:fontFamily="@font/cabin"
-                android:hint="Guardian's Mobile Phone Number"
-                android:inputType="phone"/>
-
-            <!-- Guardian address -->
-            <EditText
-                android:id="@+id/editTextGuardianAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Guardian's Address"
-                android:autofillHints="" />
-
-            <!-- Guardian's Occupation -->
-            <EditText
-                android:id="@+id/editTextGuardianOccupation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Guardian's Occupation"
-                android:autofillHints="" />
-
-            <!-- Land Phone Number -->
-            <EditText
-                android:id="@+id/editTextLandPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Land Phone Number"
-                android:inputType="phone"
-                android:autofillHints="" />
-
-            <!-- Weight -->
-            <EditText
-                android:id="@+id/editTextWeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Weight"
-                android:inputType="numberDecimal"
-                android:autofillHints="" />
-
-            <!-- Height -->
-            <EditText
-                android:id="@+id/editTextHeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/cabin"
-                android:hint="Height"
-                android:inputType="numberDecimal"
-                android:autofillHints="" />
-
-        </LinearLayout>
-
-        <LinearLayout
-
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="10dp"
-            android:weightSum="5"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout">
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/label_grade"
-                android:layout_width="wrap_content"
-                android:maxWidth="80dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:gravity="center_vertical"
-                android:fontFamily="@font/cabin"
-                android:layout_weight="3"
-                android:text="Guardin's E-mail"
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/spinner_email"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_below="@id/label_grade"
-                android:layout_weight="2"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout2">
-
-            <!-- Images of Student -->
-            <Button
-                android:layout_gravity="center"
-                android:backgroundTint="@color/lightGreen"
-                android:fontFamily="@font/cabin"
-                android:textSize="16sp"
-                android:id="@+id/buttonAddImages"
-                android:layout_width="150dp"
-                android:layout_marginBottom="10dp"
+                android:id="@+id/titleText"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Add Image" />
+                android:text="Add a Student"
+                android:textColor="#87CEEB"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Save Button -->
-            <Button
-                android:layout_gravity="center"
-                android:backgroundTint="@color/lightGreen"
-                android:fontFamily="@font/cabin"
-                android:textSize="16sp"
-                android:id="@+id/buttonSave"
-                android:layout_width="150dp"
-                android:layout_marginBottom="20dp"
+            <TextView
+                android:id="@+id/nameLabel"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Save" />
+                android:layout_marginTop="30dp"
+                android:text="Name"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleText" />
 
-        </LinearLayout>
+            <EditText
+                android:id="@+id/nameInput"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="#2A2A2A"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameLabel" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/libIdLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Lib. ID"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameInput" />
+
+            <EditText
+                android:id="@+id/libIdInput"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="#2A2A2A"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/libIdLabel" />
+
+            <TextView
+                android:id="@+id/branchLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Branch"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/libIdInput" />
+
+            <EditText
+                android:id="@+id/branchInput"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="#2A2A2A"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/branchLabel" />
+
+            <TextView
+                android:id="@+id/yearLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Year"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/branchInput" />
+
+            <EditText
+                android:id="@+id/yearInput"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="#2A2A2A"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/yearLabel" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#7CC6EC"
+        android:padding="12dp"
+        android:text="Add"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        app:layout_constraintVertical_bias="0.521" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:background="@drawable/bkg_gradient"-->
+<!--    android:padding="10dp"-->
+<!--    tools:context=".AddStudentActivity" >-->
+<!--    -->
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
 
 
