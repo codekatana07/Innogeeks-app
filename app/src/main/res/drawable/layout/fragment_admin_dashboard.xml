@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bkg_gradient">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="134dp"
+        android:background="@drawable/img_4"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dashboard "
+            android:textSize="24sp"
+            android:textColor="#87CEEB"
+            android:layout_marginStart="24dp"/>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/createClassCard"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#2A2A2A"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Create class"
+                    android:textColor="#87CEEB"
+                    android:textSize="28sp"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/create_class"
+                    android:padding="16dp"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/addTeacherCard"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#2A2A2A"
+                app:layout_constraintTop_toBottomOf="@id/createClassCard"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Add Teacher"
+                    android:textColor="#87CEEB"
+                    android:textSize="28sp"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/person_add"
+                    android:padding="16dp"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/addStudentCard"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#2A2A2A"
+                app:layout_constraintTop_toBottomOf="@id/addTeacherCard"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Add Student"
+                    android:textColor="#87CEEB"
+                    android:textSize="28sp"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/person_add"
+                    android:padding="16dp"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/removeStudentCard"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#2A2A2A"
+                app:layout_constraintTop_toBottomOf="@id/addStudentCard"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Remove Student"
+                    android:textColor="#87CEEB"
+                    android:textSize="28sp"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/person_remove"
+                    android:padding="16dp"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/Approve_Student_AddingCard"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#2A2A2A"
+                app:layout_constraintTop_toBottomOf="@id/removeStudentCard"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Approve Student Adding"
+                    android:textColor="#87CEEB"
+                    android:textSize="24sp"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/baseline_check_24"
+                    android:padding="16dp"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/Approve_Student_RemovalCard"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#2A2A2A"
+                app:layout_constraintTop_toBottomOf="@id/Approve_Student_AddingCard"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Approve Student Removal"
+                    android:textColor="#87CEEB"
+                    android:textSize="24sp"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/baseline_clear_24"
+                    android:padding="16dp"/>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:background="#17e682"-->
+    <!--    tools:context=".TeachersActivity">-->
+
+
+    <!--    <View-->
+    <!--        android:id="@+id/top_view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="150dp"-->
+    <!--        android:background="@drawable/bg_view"/>-->
+
+    <!--    <ScrollView-->
+    <!--        android:id="@+id/scrollView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_below="@+id/top_view">-->
+
+    <!--        <GridLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:minHeight="800dp"-->
+    <!--            android:layout_marginLeft="24dp"-->
+    <!--            android:layout_marginTop="0dp"-->
+    <!--            android:layout_marginRight="24dp"-->
+    <!--            android:columnCount="2"-->
+    <!--            android:rowCount="3">-->
+
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:id="@+id/create_class_card"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="150dp"-->
+    <!--                android:layout_row="0"-->
+    <!--                android:layout_rowWeight="1"-->
+    <!--                android:layout_column="0"-->
+    <!--                android:layout_columnWeight="1"-->
+    <!--                android:layout_margin="12dp"-->
+
+    <!--                app:cardCornerRadius="15dp"-->
+    <!--                app:cardElevation="12dp">-->
+
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_gravity="center"-->
+    <!--                    android:layout_marginTop="40dp"-->
+    <!--                    android:orientation="vertical">-->
+
+    <!--                    <ImageView-->
+    <!--                        android:layout_width="80dp"-->
+    <!--                        android:layout_height="80dp"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:src="@drawable/edit" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:text="Create class"-->
+    <!--                        android:layout_marginTop="10dp"-->
+    <!--                        android:textAlignment="center"-->
+    <!--                        android:textColor="#0f0f0f"-->
+    <!--                        android:textSize="18sp"-->
+    <!--                        android:textStyle="bold" />-->
+    <!--                </LinearLayout>-->
+    <!--            </androidx.cardview.widget.CardView>-->
+
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:id="@+id/addTeachers"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="150dp"-->
+    <!--                android:layout_row="0"-->
+    <!--                android:layout_rowWeight="1"-->
+    <!--                android:layout_column="1"-->
+    <!--                android:layout_columnWeight="1"-->
+    <!--                android:layout_margin="12dp"-->
+    <!--                app:cardCornerRadius="15dp"-->
+    <!--                app:cardElevation="12dp">-->
+
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_gravity="center"-->
+    <!--                    android:layout_marginTop="40dp"-->
+    <!--                    android:orientation="vertical">-->
+
+    <!--                    <ImageView-->
+    <!--                        android:layout_width="80dp"-->
+    <!--                        android:layout_height="80dp"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:src="@drawable/adduser" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:text="Add teachers"-->
+    <!--                        android:layout_marginTop="10dp"-->
+
+    <!--                        android:textAlignment="center"-->
+    <!--                        android:textColor="#0f0f0f"-->
+    <!--                        android:textSize="18sp"-->
+    <!--                        android:textStyle="bold" />-->
+    <!--                </LinearLayout>-->
+    <!--            </androidx.cardview.widget.CardView>-->
+
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:id="@+id/remove_std"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="150dp"-->
+    <!--                android:layout_row="1"-->
+    <!--                android:layout_rowWeight="1"-->
+    <!--                android:layout_column="0"-->
+    <!--                android:layout_columnWeight="1"-->
+    <!--                android:layout_margin="12dp"-->
+    <!--                app:cardCornerRadius="15dp"-->
+    <!--                app:cardElevation="12dp">-->
+
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_gravity="center"-->
+    <!--                    android:layout_marginTop="40dp"-->
+    <!--                    android:orientation="vertical">-->
+
+    <!--                    <ImageView-->
+    <!--                        android:layout_width="80dp"-->
+    <!--                        android:layout_height="80dp"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:src="@drawable/removeuser" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:text="Remove Students"-->
+    <!--                        android:layout_marginTop="10dp"-->
+
+    <!--                        android:textAlignment="center"-->
+    <!--                        android:textColor="#0f0f0f"-->
+    <!--                        android:textSize="18sp"-->
+    <!--                        android:textStyle="bold" />-->
+    <!--                </LinearLayout>-->
+    <!--            </androidx.cardview.widget.CardView>-->
+
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:id="@+id/addStudents"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="150dp"-->
+    <!--                android:layout_row="1"-->
+    <!--                android:layout_rowWeight="1"-->
+    <!--                android:layout_column="1"-->
+    <!--                android:layout_columnWeight="1"-->
+    <!--                android:layout_margin="12dp"-->
+    <!--                app:cardCornerRadius="15dp"-->
+    <!--                app:cardElevation="12dp">-->
+
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_gravity="center"-->
+    <!--                    android:layout_marginTop="40dp"-->
+    <!--                    android:orientation="vertical">-->
+
+    <!--                    <ImageView-->
+    <!--                        android:layout_width="80dp"-->
+    <!--                        android:layout_height="80dp"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:src="@drawable/addstudent" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:text="Add Students"-->
+    <!--                        android:layout_marginTop="10dp"-->
+    <!--                        android:textAlignment="center"-->
+    <!--                        android:textColor="#0f0f0f"-->
+    <!--                        android:textSize="18sp"-->
+    <!--                        android:textStyle="bold" />-->
+    <!--                </LinearLayout>-->
+    <!--            </androidx.cardview.widget.CardView>-->
+
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:id="@+id/approveAddStd"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="150dp"-->
+    <!--                android:layout_row="2"-->
+    <!--                android:layout_rowWeight="1"-->
+    <!--                android:layout_column="0"-->
+    <!--                android:layout_columnWeight="1"-->
+    <!--                android:layout_margin="12dp"-->
+    <!--                app:cardCornerRadius="15dp"-->
+    <!--                app:cardElevation="12dp">-->
+
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_gravity="center"-->
+    <!--                    android:layout_marginTop="40dp"-->
+    <!--                    android:orientation="vertical">-->
+
+    <!--                    <ImageView-->
+    <!--                        android:layout_width="80dp"-->
+    <!--                        android:layout_height="80dp"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:src="@drawable/quality" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:text="Approve Student Adding"-->
+    <!--                        android:layout_marginTop="10dp"-->
+
+    <!--                        android:textAlignment="center"-->
+    <!--                        android:textColor="#0f0f0f"-->
+    <!--                        android:textSize="18sp"-->
+    <!--                        android:textStyle="bold" />-->
+    <!--                </LinearLayout>-->
+    <!--            </androidx.cardview.widget.CardView>-->
+
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:id="@+id/approveRemoveStd"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="150dp"-->
+    <!--                android:layout_row="2"-->
+    <!--                android:layout_rowWeight="1"-->
+    <!--                android:layout_column="1"-->
+    <!--                android:layout_columnWeight="1"-->
+    <!--                android:layout_margin="12dp"-->
+    <!--                app:cardCornerRadius="15dp"-->
+    <!--                app:cardElevation="12dp">-->
+
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_gravity="center"-->
+    <!--                    android:layout_marginTop="40dp"-->
+    <!--                    android:orientation="vertical">-->
+
+    <!--                    <ImageView-->
+    <!--                        android:layout_width="80dp"-->
+    <!--                        android:layout_height="80dp"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:src="@drawable/declined" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_gravity="center_horizontal"-->
+    <!--                        android:text="Approve Studnet Removal"-->
+    <!--                        android:layout_marginTop="10dp"-->
+    <!--                        android:textAlignment="center"-->
+    <!--                        android:textColor="#0f0f0f"-->
+    <!--                        android:textSize="18sp"-->
+    <!--                        android:textStyle="bold" />-->
+    <!--                </LinearLayout>-->
+    <!--            </androidx.cardview.widget.CardView>-->
+
+    <!--        </GridLayout>-->
+    <!--    </ScrollView>-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Dashboard"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:textSize="36sp"-->
+    <!--        android:textStyle="bold"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginTop="30dp"/>-->
+    <!--    <TextView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="(Admin)"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:textSize="18sp"-->
+    <!--        android:textStyle="bold"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginTop="70dp"/>-->
+
+    <!--</RelativeLayout>-->
