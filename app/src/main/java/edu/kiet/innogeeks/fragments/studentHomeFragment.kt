@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import edu.kiet.innogeeks.ParentNotesActivity
 import edu.kiet.innogeeks.R
 import edu.kiet.innogeeks.databinding.FragmentStudentHomeBinding
 import edu.kiet.innogeeks.markAttendanceFragment

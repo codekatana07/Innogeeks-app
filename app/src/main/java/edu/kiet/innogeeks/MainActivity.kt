@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.kiet.innogeeks.databinding.ActivityMainBinding
+import edu.kiet.innogeeks.fragments.admin_home
 import edu.kiet.innogeeks.fragments.coordinatorHomeFragment
 import edu.kiet.innogeeks.fragments.personalDetailsFragment
 import edu.kiet.innogeeks.fragments.settingsFragment
 import edu.kiet.innogeeks.fragments.studentHomeFragment
-import edu.kiet.innogeeks.fragments.userFragment
 
 
 class MainActivity : AppCompatActivity() {
