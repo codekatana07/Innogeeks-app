@@ -108,7 +108,7 @@ class RegisterActivity : AppCompatActivity() {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
-                    }, 1000) // 1 second delay
+                    }, 800)
                 }
             } else {
                 Toast.makeText(this, "Error checking user existence: ${task.exception?.message}", Toast.LENGTH_LONG).show()
@@ -129,7 +129,6 @@ class RegisterActivity : AppCompatActivity() {
                     val userMap = hashMapOf(
                         "email" to email,
                         "uid" to uid,
-                        "createdAt" to System.currentTimeMillis()
                     )
 
                     // Add to users collection

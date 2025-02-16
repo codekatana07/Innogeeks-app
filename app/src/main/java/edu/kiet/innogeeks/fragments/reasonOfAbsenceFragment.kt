@@ -6,124 +6,129 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import edu.kiet.innogeeks.R
 import edu.kiet.innogeeks.databinding.FragmentReasonOfAbsenceBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+private const val TAG = "reasonOfAbsenceFragment"
+
 class reasonOfAbsenceFragment : Fragment() {
 
     private var _binding: FragmentReasonOfAbsenceBinding? = null
     private val binding get() = _binding!!
-    private lateinit var db: FirebaseFirestore
-    private lateinit var userId: String
-    private lateinit var currentDate: String
-    private lateinit var domain: String
-
+    private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    private val userId: String by lazy {
+        FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("User must be logged in")
+    }
+    private val currentDate: String by lazy {
+        SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+    }
+    private var domain: String? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentReasonOfAbsenceBinding.inflate(inflater,container,false)
+    ): View {
+        _binding = FragmentReasonOfAbsenceBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        db = FirebaseFirestore.getInstance()
-        userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        currentDate = sdf.format(Date())
         binding.editTextDate.text = currentDate
-
+        binding.btnSubmit.setOnClickListener { submitReason() }
         getStudentDetails()
-
-        binding.btnSubmit.setOnClickListener {
-            submitReason()
-        }
     }
 
     private fun submitReason() {
         val reason = binding.editTextTextMultiLine.text.toString()
         if (reason.isEmpty()) {
-            Toast.makeText(requireContext(), "Please enter a reason", Toast.LENGTH_SHORT).show()
+            showToast("Please enter a reason")
             return
         }
 
-        // Get reference to the student document
+        if (domain == null) {
+            showToast("Please wait while loading student details")
+            return
+        }
+
         val studentRef = db.collection("Domains")
-            .document(domain)
-            .collection("S" +
-                    "tudents")
+            .document(domain!!)
+            .collection("Students")
             .document(userId)
+
         studentRef.get()
             .addOnSuccessListener { document ->
-                val existingReasons = document.get("reasonOfAbsence") as? Map<String, String> ?: mapOf()
-
-                // Create new map with existing reasons plus new one
-                val updatedReasons = existingReasons.toMutableMap()
-                updatedReasons[currentDate] = reason
-
-                // Update Firestore with the merged map
-                studentRef.update("reasonOfAbsence", updatedReasons)
-                    .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "Reason submitted successfully", Toast.LENGTH_SHORT).show()
-                        binding.editTextTextMultiLine.text.clear()
+                if (document.exists()) {
+                    val existingReasons = document.get("reasonOfAbsence") as? Map<String, String> ?: mapOf()
+                    val updatedReasons = existingReasons.toMutableMap().apply {
+                        put(currentDate, reason)
                     }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(requireContext(), "Failed to submit reason", Toast.LENGTH_SHORT).show()
-                        Log.w("ParentNotesFragment", "Error submitting reason", e)
-                    }
+
+                    studentRef.update("reasonOfAbsence", updatedReasons)
+                        .addOnSuccessListener {
+                            showToast("Reason submitted successfully")
+                            binding.editTextTextMultiLine.text.clear()
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e(TAG, "Error submitting reason", e)
+                            showToast("Failed to submit reason: ${e.message}")
+                        }
+                } else {
+                    showToast("Student document not found")
+                }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(requireContext(), "Failed to fetch existing reasons", Toast.LENGTH_SHORT).show()
-                Log.w("ParentNotesFragment", "Error fetching reasons", e)
+                Log.e(TAG, "Error fetching existing reasons", e)
+                showToast("Failed to fetch existing reasons: ${e.message}")
             }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // Clean up the binding object to avoid memory leaks
-        _binding = null
-    }
     private fun getStudentDetails() {
         db.collection("Domains")
             .get()
             .addOnSuccessListener { domains ->
+                var studentFound = false
                 for (domainDoc in domains) {
-                    domain = domainDoc.id
+                    if (studentFound) break
+
+                    val currentDomain = domainDoc.id
                     db.collection("Domains")
-                        .document(domain)
+                        .document(currentDomain)
                         .collection("Students")
                         .document(userId)
                         .get()
                         .addOnSuccessListener { document ->
-                            Log.d("DOCUMENT INFO", document.getString("name").toString())
                             if (document.exists()) {
-                                Log.d("DOCUMENT INFO inside if", document.getString("name").toString())
-                                binding.labelStdName.text = "Name: ${document.getString("email")}"
-                                binding.labelGrade.text = "Domain: $domain"
-
+                                studentFound = true
+                                domain = currentDomain
+                                binding.labelStdName.text = "Name: ${document.getString("email") ?: "N/A"}"
+                                binding.labelGrade.text = "Domain: $currentDomain"
+                                Log.d(TAG, "Student found in domain: $currentDomain")
                             }
                         }
-
                         .addOnFailureListener { e ->
-                            Log.w("ParentNotesFragment", "Error getting student details", e)
+                            Log.e(TAG, "Error getting student details for domain $currentDomain", e)
                         }
-
                 }
             }
             .addOnFailureListener { e ->
-                Log.w("ParentNotesFragment", "Error getting domains", e)
+                Log.e(TAG, "Error getting domains", e)
+                showToast("Failed to fetch domains: ${e.message}")
             }
     }
 
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
