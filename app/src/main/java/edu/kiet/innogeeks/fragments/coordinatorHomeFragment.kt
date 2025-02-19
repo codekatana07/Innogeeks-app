@@ -26,15 +26,22 @@ class coordinatorHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.markAttendanceCard.setOnClickListener{
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.frame, markAttendanceFragment())
-                .addToBackStack(null)
-                .commit()
+            changeFragment(markAttendanceFragment())
+        }
+        binding.addResourceCard.setOnClickListener{
+            changeFragment(addResourceFragment())
         }
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Prevent memory leaks
+    }
+
+    private fun changeFragment(frag:Fragment){
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.frame, frag)
+            .addToBackStack(null)
+            .commit()
     }
 
 }

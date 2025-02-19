@@ -47,7 +47,7 @@
             android:layout_height="wrap_content">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/createClassCard"
+                android:id="@+id/addResourceCard"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:layout_marginBottom="16dp"
@@ -62,7 +62,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" Enroll Student"
+                    android:text=" Add Resources"
                     android:textColor="#ffff"
                     android:textStyle="bold"
                     android:textSize="36sp"
@@ -79,7 +79,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="#2A2A2A"
-                app:layout_constraintTop_toBottomOf="@id/createClassCard"
+                app:layout_constraintTop_toBottomOf="@id/addResourceCard"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 

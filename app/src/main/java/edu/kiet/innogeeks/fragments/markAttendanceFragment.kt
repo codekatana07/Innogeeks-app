@@ -25,6 +25,7 @@ class markAttendanceFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private var coordinatorDomain: String? = null
     private var currentDate: String = ""
+    private var hasAttendanceMarkedToday: Boolean = false  // Add this flag
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,18 +63,22 @@ class markAttendanceFragment : Fragment() {
     }
 
     private fun fetchCoordinatorData(coordinatorId: String) {
-        // First, find which domain this coordinator belongs to
         db.collection("Domains").get()
             .addOnSuccessListener { domains ->
+                var found = false
                 for (domain in domains) {
                     domain.reference.collection("Coordinators")
                         .document(coordinatorId)
                         .get()
                         .addOnSuccessListener { coordinator ->
-                            if (coordinator.exists()) {
+                            if (coordinator.exists() && !found) {
+                                found = true
                                 coordinatorDomain = domain.id
                                 binding.coordinatorName.text = "Coordinator: ${coordinator.getString("name")}"
                                 binding.coordinatorDomain.text = "Domain: ${domain.id}"
+
+                                // Check if attendance is already marked for today
+                                checkTodayAttendance(domain.id)
 
                                 // After finding the domain, fetch its students
                                 fetchStudentData(domain.id)
@@ -84,6 +89,21 @@ class markAttendanceFragment : Fragment() {
             .addOnFailureListener { e ->
                 Log.e("Firestore", "Error fetching domains", e)
                 Toast.makeText(requireContext(), "Failed to load coordinator data", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun checkTodayAttendance(domain: String) {
+        db.collection("Domains")
+            .document(domain)
+            .get()
+            .addOnSuccessListener { document ->
+                val attendanceMap = document.get("attendance") as? Map<*, *>
+                hasAttendanceMarkedToday = attendanceMap?.containsKey(currentDate) == true
+
+                if (hasAttendanceMarkedToday) {
+                    binding.btnSubmit.isEnabled = false
+                    Toast.makeText(requireContext(), "Attendance already marked for today", Toast.LENGTH_LONG).show()
+                }
             }
     }
 
@@ -111,6 +131,11 @@ class markAttendanceFragment : Fragment() {
     }
 
     private fun submitAttendance() {
+        if (hasAttendanceMarkedToday) {
+            Toast.makeText(requireContext(), "Attendance already marked for today", Toast.LENGTH_LONG).show()
+            return
+        }
+
         val presentStudents = adapter.getCheckedStudentIds()
 
         if (presentStudents.isEmpty()) {
@@ -119,6 +144,9 @@ class markAttendanceFragment : Fragment() {
         }
 
         coordinatorDomain?.let { domain ->
+            // Disable submit button to prevent double submission
+            binding.btnSubmit.isEnabled = false
+
             val domainRef = db.collection("Domains").document(domain)
 
             // Create batch
@@ -148,6 +176,8 @@ class markAttendanceFragment : Fragment() {
                 .addOnFailureListener { e ->
                     Log.e("Firestore", "Error marking attendance", e)
                     Toast.makeText(requireContext(), "Failed to mark attendance", Toast.LENGTH_SHORT).show()
+                    // Re-enable submit button on failure
+                    binding.btnSubmit.isEnabled = true
                 }
         }
     }

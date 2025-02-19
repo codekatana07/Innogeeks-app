@@ -8,12 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import edu.kiet.innogeeks.ParentNotesActivity
+import com.google.firebase.firestore.Query
 import edu.kiet.innogeeks.R
+import edu.kiet.innogeeks.adapter.ResourceAdapter
 import edu.kiet.innogeeks.databinding.FragmentStudentHomeBinding
 import edu.kiet.innogeeks.markAttendanceFragment
+import edu.kiet.innogeeks.model.Resource
 
 
 class studentHomeFragment : Fragment() {
@@ -24,6 +27,8 @@ class studentHomeFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private var studentDomain: String? = null
     private var studentUID: String? = null
+    private lateinit var resourceAdapter: ResourceAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,26 +50,16 @@ class studentHomeFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+        resourceAdapter = ResourceAdapter()
+        binding.resourcesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = resourceAdapter
+        }
 
         setupUI()
         fetchUserData()
 
 
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun setupUI() {
-
-        // Initialize progress indicator
-        binding.attendanceProgress.apply {
-            trackThickness = 8
-            indicatorSize = 120
-            trackColor = Color.parseColor("#E0E0E0")
-        }
     }
 
     private fun fetchUserData() {
@@ -94,7 +89,9 @@ class studentHomeFragment : Fragment() {
 
                                 val totalPresentDays = studentDoc.getLong("totalPresentDays") ?: 0L
                                 fetchTotalDays(studentDomain!!, totalPresentDays)
-                            } else {
+
+                                // Once we know the student's domain, fetch their resources
+                                fetchResources(studentDomain!!)
                             }
                         }
                 }
@@ -102,6 +99,40 @@ class studentHomeFragment : Fragment() {
             .addOnFailureListener { e ->
                 Toast.makeText(context, "Failed to load student data", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun fetchResources(domain: String) {
+        db.collection("Domains")
+            .document(domain)
+            .collection("resources")
+            .orderBy("timestamp", Query.Direction.DESCENDING)  // Most recent first
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Toast.makeText(context, "Error fetching resources", Toast.LENGTH_SHORT).show()
+                    return@addSnapshotListener
+                }
+
+                snapshot?.let { documents ->
+                    val resourcesList = documents.mapNotNull { doc ->
+                        doc.toObject(Resource::class.java)
+                    }
+                    resourceAdapter.updateResources(resourcesList)
+                }
+            }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupUI() {
+
+        // Initialize progress indicator
+        binding.attendanceProgress.apply {
+            trackThickness = 8
+            indicatorSize = 120
+            trackColor = Color.parseColor("#E0E0E0")
+        }
     }
 
     private fun fetchTotalDays(domain: String, presentDays: Long) {

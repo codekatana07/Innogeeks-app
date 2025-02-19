@@ -2,6 +2,7 @@ package edu.kiet.innogeeks
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -9,17 +10,17 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.kiet.innogeeks.databinding.ActivityMainBinding
+import edu.kiet.innogeeks.fragments.admin_home
 import edu.kiet.innogeeks.fragments.coordinatorHomeFragment
 import edu.kiet.innogeeks.fragments.personalDetailsFragment
 import edu.kiet.innogeeks.fragments.settingsFragment
 import edu.kiet.innogeeks.fragments.studentHomeFragment
-import edu.kiet.innogeeks.fragments.userFragment
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private val TAG = "MainActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         // Initialize Firebase instances
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+
+        // Initialize UserDataManager and fetch user data
+        initializeUserData()
 
         // Set up drawer toggle
         val drawerToggle = findViewById<ImageButton>(R.id.openDrawerLayout)
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navLogOut -> {
+                    UserDataManager.stopListening() // Stop listening before logout
                     auth.signOut()
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
@@ -67,7 +72,31 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> false
             }
-        }    }
+        }
+    }
+
+    private fun initializeUserData() {
+        UserDataManager.initialize { success ->
+            if (success) {
+                logUserData()
+            } else {
+                Log.e(TAG, "Failed to initialize UserDataManager")
+                Toast.makeText(this, "Failed to fetch user data", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun logUserData() {
+        UserDataManager.getCurrentUser()?.let { userData ->
+            Log.d(TAG, "User Data:")
+            Log.d(TAG, "UID: ${userData.uid}")
+            Log.d(TAG, "Name: ${userData.name}")
+            Log.d(TAG, "Email: ${userData.email}")
+            Log.d(TAG, "Role: ${userData.role}")
+            Log.d(TAG, "Domain: ${userData.domain}")
+            Log.d(TAG, "Library ID: ${userData.libraryId}")
+        } ?: Log.e(TAG, "No user data available")
+    }
 
     private fun checkUserRoleAndLoadFragment() {
         val currentUser = auth.currentUser
@@ -77,59 +106,20 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val uid = currentUser.uid
-
-        // First check if user is admin
-        db.collection("admins").document(uid).get()
-            .addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
-                    changeFragment(admin_home())
-                    return@addOnSuccessListener
+        UserDataManager.getCurrentUser()?.let { userData ->
+            when (userData.role) {
+                "admin" -> changeFragment(admin_home())
+                "coordinator" -> changeFragment(coordinatorHomeFragment())
+                "student" -> changeFragment(studentHomeFragment())
+                else -> {
+                    Log.e(TAG, "Unknown user role: ${userData.role}")
+                    Toast.makeText(this, "Unknown user role", Toast.LENGTH_SHORT).show()
                 }
-
-                // If not admin, check in all domains
-                val domains = listOf("Android", "Web_2", "Web_3", "IoT", "ML", "AR-VR")
-                var userFound = false
-
-                for (domain in domains) {
-                    // Check in coordinators collection
-                    db.collection("Domains").document(domain)
-                        .collection("Coordinators").document(uid).get()
-                        .addOnSuccessListener { coordSnapshot ->
-                            if (coordSnapshot.exists() && !userFound) {
-                                userFound = true
-                                changeFragment(coordinatorHomeFragment())
-                                return@addOnSuccessListener
-                            }
-                        }
-
-                    // Check in students collection
-                    db.collection("Domains").document(domain)
-                        .collection("Students").document(uid).get()
-                        .addOnSuccessListener { studentSnapshot ->
-                            if (studentSnapshot.exists() && !userFound) {
-                                userFound = true
-                                changeFragment(studentHomeFragment())
-                                return@addOnSuccessListener
-                            }
-                        }
-                        .addOnFailureListener { exception ->
-                            Toast.makeText(
-                                this,
-                                "Error checking role: ${exception.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                }
-
             }
-            .addOnFailureListener { exception ->
-                Toast.makeText(
-                    this,
-                    "Error checking role: ${exception.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        } ?: run {
+            Log.e(TAG, "No user data available")
+            Toast.makeText(this, "Failed to load user data", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun changeFragment(fragment: Fragment) {
@@ -138,4 +128,8 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        UserDataManager.stopListening()
+    }
 }
