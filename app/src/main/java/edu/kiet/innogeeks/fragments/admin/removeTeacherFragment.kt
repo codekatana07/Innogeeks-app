@@ -20,8 +20,6 @@ import edu.kiet.innogeeks.model.User
 class removeTeacherFragment : Fragment() {
     private var _binding: FragmentRemoveTeacherBinding? = null
     private val binding get() = _binding!!
-    private var domainForRemoval : String = "AR-VR"
-
     private val selectedUserIds = mutableSetOf<String>()
     private val userAdapter = UserListAdapter()
     private val db = FirebaseFirestore.getInstance()
