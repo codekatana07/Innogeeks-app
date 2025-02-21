@@ -1,5 +1,6 @@
 package edu.kiet.innogeeks
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.addListener
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -27,51 +29,18 @@ class RegisterActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 9001
     private val TAG = "RegisterActivity"
 
-    private val images = arrayOf(
-        R.drawable.img,
-        R.drawable.img_1,
-        R.drawable.img_2,
-        R.drawable.img_3,
-    )
-    private var currentImageIndex = 0
-    private val delay = 1500L
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val imageSwitcher = object : Runnable {
-        override fun run() {
-            val fadeOut = ObjectAnimator.ofFloat(imageAnimation, "alpha", 1f, 0.4f)
-            fadeOut.duration = 500
-            fadeOut.start()
-
-            fadeOut.addListener(object : android.animation.Animator.AnimatorListener {
-                override fun onAnimationStart(animation: android.animation.Animator) {}
-                override fun onAnimationEnd(animation: android.animation.Animator) {
-                    imageAnimation.setImageResource(images[currentImageIndex])
-                    imageAnimation.alpha = 1f
-                }
-                override fun onAnimationCancel(animation: android.animation.Animator) {}
-                override fun onAnimationRepeat(animation: android.animation.Animator) {}
-            })
-
-            currentImageIndex = (currentImageIndex + 1) % images.size
-            handler.postDelayed(this, delay)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        handler.removeCallbacks(imageSwitcher)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //Image Animation
+        startImageAnimation()
+
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-        imageAnimation = findViewById(R.id.animation)
-        handler.post(imageSwitcher)
+        imageAnimation = findViewById(R.id.image0)
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -287,4 +256,32 @@ class RegisterActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+    private fun startImageAnimation() {
+        val fadeDuration = 1000L
+
+        fun fadeInOut(imageView: ImageView, delay: Long, nextAction: () -> Unit) {
+            val fadeIn = ObjectAnimator.ofFloat(imageView, "alpha", 0f, 1f).setDuration(fadeDuration)
+            val fadeOut = ObjectAnimator.ofFloat(imageView, "alpha", 1f, 0f).setDuration(fadeDuration)
+
+            val animatorSet = AnimatorSet().apply {
+                startDelay = delay
+                playSequentially(fadeIn, fadeOut)
+                addListener(onEnd = { nextAction() })
+            }
+            animatorSet.start()
+        }
+
+        fun startLoop() {
+            fadeInOut(binding.image0, 100L) {
+                fadeInOut(binding.image1, 100L) {
+                    fadeInOut(binding.image2, 100L) {
+                        startLoop() // Loop the animation sequence
+                    }
+                }
+            }
+        }
+
+        startLoop()
+    }
+
 }
