@@ -1,25 +1,28 @@
 package edu.kiet.innogeeks.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import edu.kiet.innogeeks.R
+import edu.kiet.innogeeks.UserDataManager
 import edu.kiet.innogeeks.databinding.FragmentAddResourceBinding
 import edu.kiet.innogeeks.model.Resource
+import edu.kiet.innogeeks.model.UserData
 
-
-// AddResourceFragment.kt
 class addResourceFragment : Fragment() {
     private var _binding: FragmentAddResourceBinding? = null
     private val binding get() = _binding!!
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
-    private var domain: String? = null
+
+    private val domains = listOf("android", "web2", "web3", "ar-vr", "ml", "iot")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,43 +39,61 @@ class addResourceFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
-        // First, fetch the coordinator's domain
-        fetchCoordinatorDomain()
-
-        binding.submitButton.setOnClickListener {
-            addResource()
+        val currentUser = UserDataManager.getCurrentUser()
+        if (currentUser != null) {
+            setupUI(currentUser)
+        } else {
+            Toast.makeText(context, "User data not available", Toast.LENGTH_SHORT).show()
+            binding.submitButton.isEnabled = false
         }
     }
 
-    private fun fetchCoordinatorDomain() {
-        val coordinatorId = auth.currentUser?.uid ?: return
+    private fun setupUI(userData: UserData) {
+        setupDomainSpinner()
 
-        db.collection("Domains")
-            .get()
-            .addOnSuccessListener { domains ->
-                for (domainDoc in domains) {
-                    db.collection("Domains")
-                        .document(domainDoc.id)
-                        .collection("Coordinators")
-                        .document(coordinatorId)
-                        .get()
-                        .addOnSuccessListener { doc ->
-                            if (doc.exists()) {
-                                domain = domainDoc.id
-                            }
-                        }
+        when (userData.role) {
+            "admin", "coordinator" -> {
+                binding.submitButton.isEnabled = true
+                binding.submitButton.setOnClickListener { addResource() }
+
+                if (userData.role == "coordinator" && userData.domain != "none") {
+                    val domainIndex = domains.indexOf(userData.domain)
+                    if (domainIndex != -1) {
+                        binding.domainSpinner.setSelection(domainIndex)
+                    }
                 }
             }
+            else -> {
+                binding.submitButton.isEnabled = false
+                Toast.makeText(context, "Unauthorized to add resources", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setupDomainSpinner() {
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            domains
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.domainSpinner.adapter = adapter
     }
 
     private fun addResource() {
-        if (domain == null) {
-            Toast.makeText(context, "Domain not found", Toast.LENGTH_SHORT).show()
+        val currentUser = UserDataManager.getCurrentUser() ?: run {
+            Toast.makeText(context, "User data not available", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (currentUser.role != "admin" && currentUser.role != "coordinator") {
+            Toast.makeText(context, "Unauthorized to add resources", Toast.LENGTH_SHORT).show()
             return
         }
 
         val title = binding.titleInput.text.toString()
         val description = binding.descriptionInput.text.toString()
+        val selectedDomain = binding.domainSpinner.selectedItem.toString()
 
         if (title.isEmpty() || description.isEmpty()) {
             Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
@@ -83,21 +104,37 @@ class addResourceFragment : Fragment() {
             title = title,
             description = description,
             timestamp = System.currentTimeMillis(),
-            coordinatorId = auth.currentUser?.uid ?: return
+            authorName = currentUser.name,
+            libraryId = currentUser.libraryId
         )
 
         db.collection("Domains")
-            .document(domain!!)
+            .document(selectedDomain)
             .collection("resources")
             .add(resource)
             .addOnSuccessListener {
                 Toast.makeText(context, "Resource added successfully", Toast.LENGTH_SHORT).show()
-                binding.titleInput.text?.clear()
-                binding.descriptionInput.text?.clear()
+                clearInputs()
             }
             .addOnFailureListener {
                 Toast.makeText(context, "Failed to add resource", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun clearInputs() {
+        hideKeyboard()
+        binding.titleInput.text?.clear()
+        binding.descriptionInput.text?.clear()
+
+
+        val currentUser = UserDataManager.getCurrentUser()
+        if (currentUser?.role == "admin") {
+            binding.domainSpinner.setSelection(0)
+        }
+    }
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     override fun onDestroyView() {

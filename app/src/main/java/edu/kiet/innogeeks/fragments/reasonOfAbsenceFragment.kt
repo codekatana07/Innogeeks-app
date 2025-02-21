@@ -1,11 +1,13 @@
 package edu.kiet.innogeeks.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -72,6 +74,7 @@ class reasonOfAbsenceFragment : Fragment() {
 
                     studentRef.update("reasonOfAbsence", updatedReasons)
                         .addOnSuccessListener {
+                            hideKeyboard()
                             showToast("Reason submitted successfully")
                             binding.editTextTextMultiLine.text.clear()
                         }
@@ -125,6 +128,10 @@ class reasonOfAbsenceFragment : Fragment() {
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     override fun onDestroyView() {

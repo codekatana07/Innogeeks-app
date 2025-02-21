@@ -47,6 +47,9 @@ class admin_home : Fragment() {
         binding.addStudents.setOnClickListener {
             openFragment(addStudentFragment())
         }
+        binding.addResources.setOnClickListener{
+            openFragment(addResourceFragment())
+        }
     }
 
     private fun openFragment(fragment: Fragment) {
