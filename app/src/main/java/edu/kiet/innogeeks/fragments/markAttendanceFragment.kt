@@ -16,14 +16,16 @@ import edu.kiet.innogeeks.adapter.MarkAttendanceAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 
+private const val TAG = "markAttendanceFragment"
+
 class markAttendanceFragment : Fragment() {
+
 
     private var _binding: FragmentMarkAttendanceBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: MarkAttendanceAdapter
     private lateinit var db: FirebaseFirestore
-    private var coordinatorDomain: String? = null
     private var currentDate: String = ""
     private var hasAttendanceMarkedToday: Boolean = false  // Add this flag
 
@@ -53,45 +55,39 @@ class markAttendanceFragment : Fragment() {
             adapter = this@markAttendanceFragment.adapter
         }
 
-        // Fetch coordinator data and domain
-        coordinatorId?.let { fetchCoordinatorData(it) }
-
         // Set submit button click listener
         binding.btnSubmit.setOnClickListener {
             submitAttendance()
         }
+
+        // Initialize the view with user data
+        initializeView()
     }
+    private fun initializeView() {
+        val userData = UserDataManager.getCurrentUser()
+        if (userData == null) {
+            showToast("User data not available")
+            return
+        }
 
-    private fun fetchCoordinatorData(coordinatorId: String) {
-        db.collection("Domains").get()
-            .addOnSuccessListener { domains ->
-                var found = false
-                for (domain in domains) {
-                    domain.reference.collection("Coordinators")
-                        .document(coordinatorId)
-                        .get()
-                        .addOnSuccessListener { coordinator ->
-                            if (coordinator.exists() && !found) {
-                                found = true
-                                coordinatorDomain = domain.id
-                                binding.coordinatorName.text = "Coordinator: ${coordinator.getString("name")}"
-                                binding.coordinatorDomain.text = "Domain: ${domain.id}"
+        if (userData.role != "Coordinators") {
+            showToast("Only coordinators can mark attendance")
+            binding.btnSubmit.isEnabled = false
+            return
+        }
 
-                                // Check if attendance is already marked for today
-                                checkTodayAttendance(domain.id)
+        // Display coordinator info
+        binding.apply {
+            coordinatorName.text = "Coordinator: ${userData.name}"
+            coordinatorDomain.text = "Domain: ${userData.domain}"
+        }
 
-                                // After finding the domain, fetch its students
-                                fetchStudentData(domain.id)
-                            }
-                        }
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Error fetching domains", e)
-                Toast.makeText(requireContext(), "Failed to load coordinator data", Toast.LENGTH_SHORT).show()
-            }
+        // Check if attendance is already marked for today
+        checkTodayAttendance(userData.domain)
+
+        // Fetch students for the domain
+        fetchStudentData(userData.domain)
     }
-
     private fun checkTodayAttendance(domain: String) {
         db.collection("Domains")
             .document(domain)
@@ -102,11 +98,14 @@ class markAttendanceFragment : Fragment() {
 
                 if (hasAttendanceMarkedToday) {
                     binding.btnSubmit.isEnabled = false
-                    Toast.makeText(requireContext(), "Attendance already marked for today", Toast.LENGTH_LONG).show()
+                    showToast("Attendance already marked for today")
                 }
             }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error checking today's attendance", e)
+                showToast("Failed to check today's attendance status")
+            }
     }
-
     private fun fetchStudentData(domain: String) {
         db.collection("Domains")
             .document(domain)
@@ -125,66 +124,67 @@ class markAttendanceFragment : Fragment() {
                 adapter.updateStudents(studentList)
             }
             .addOnFailureListener { e ->
-                Log.w("Firestore", "Error fetching students", e)
-                Toast.makeText(requireContext(), "Failed to load students", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "Error fetching students", e)
+                showToast("Failed to load students")
             }
     }
-
     private fun submitAttendance() {
+        val userData = UserDataManager.getCurrentUser() ?: run {
+            showToast("User data not available")
+            return
+        }
+
         if (hasAttendanceMarkedToday) {
-            Toast.makeText(requireContext(), "Attendance already marked for today", Toast.LENGTH_LONG).show()
+            showToast("Attendance already marked for today")
             return
         }
 
         val presentStudents = adapter.getCheckedStudentIds()
-
         if (presentStudents.isEmpty()) {
-            Toast.makeText(requireContext(), "Please mark at least one student", Toast.LENGTH_SHORT).show()
+            showToast("Please mark at least one student")
             return
         }
 
-        coordinatorDomain?.let { domain ->
-            // Disable submit button to prevent double submission
-            binding.btnSubmit.isEnabled = false
+        // Disable submit button to prevent double submission
+        binding.btnSubmit.isEnabled = false
 
-            val domainRef = db.collection("Domains").document(domain)
+        val domainRef = db.collection("Domains").document(userData.domain)
+        val batch = db.batch()
 
-            // Create batch
-            val batch = db.batch()
+        // 1. Increment totalDaysHeld for the domain
+        batch.update(domainRef, "totalDaysHeld", FieldValue.increment(1))
 
-            // 1. Increment totalDaysHeld for the domain
-            batch.update(domainRef, "totalDaysHeld", FieldValue.increment(1))
+        // 2. Add present students to attendance map for current date
+        val attendanceUpdate = mapOf(
+            "attendance.$currentDate" to presentStudents
+        )
+        batch.update(domainRef, attendanceUpdate)
 
-            // 2. Add present students to attendance map for current date
-            val attendanceUpdate = mapOf(
-                "attendance.$currentDate" to presentStudents
-            )
-            batch.update(domainRef, attendanceUpdate)
-
-            // 3. Update totalPresentDays for each present student
-            presentStudents.forEach { studentId ->
-                val studentRef = domainRef.collection("Students").document(studentId)
-                batch.update(studentRef, "totalPresentDays", FieldValue.increment(1))
-            }
-
-            // Execute batch
-            batch.commit()
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Attendance marked successfully", Toast.LENGTH_SHORT).show()
-                    requireActivity().onBackPressed() // Go back after successful submission
-                }
-                .addOnFailureListener { e ->
-                    Log.e("Firestore", "Error marking attendance", e)
-                    Toast.makeText(requireContext(), "Failed to mark attendance", Toast.LENGTH_SHORT).show()
-                    // Re-enable submit button on failure
-                    binding.btnSubmit.isEnabled = true
-                }
+        // 3. Update totalPresentDays for each present student
+        presentStudents.forEach { studentId ->
+            val studentRef = domainRef.collection("Students").document(studentId)
+            batch.update(studentRef, "totalPresentDays", FieldValue.increment(1))
         }
+
+        // Execute batch
+        batch.commit()
+            .addOnSuccessListener {
+                showToast("Attendance marked successfully")
+                requireActivity().onBackPressed()
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error marking attendance", e)
+                showToast("Failed to mark attendance")
+                binding.btnSubmit.isEnabled = true
+            }
     }
 
     private fun getCurrentDate(): String {
-        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        return sdf.format(Date())
+        return SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

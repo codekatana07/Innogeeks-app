@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.kiet.innogeeks.databinding.ActivityMainBinding
+import edu.kiet.innogeeks.databinding.NavHeaderBinding
 import edu.kiet.innogeeks.fragments.admin_home
 import edu.kiet.innogeeks.fragments.coordinatorHomeFragment
 import edu.kiet.innogeeks.fragments.personalDetailsFragment
@@ -19,6 +20,7 @@ import edu.kiet.innogeeks.fragments.userFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navHeaderBinding: NavHeaderBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private val TAG = "MainActivity"
@@ -62,10 +64,11 @@ class MainActivity : AppCompatActivity() {
 
             if (success) {
                 // Log user data
-                logUserData()
+//                logUserData()
 
                 // Now that we have data, set up the UI
                 runOnUiThread {
+                    setupNavHeader()
                     // Load appropriate fragment based on role
                     checkUserRoleAndLoadFragment()
                 }
@@ -92,10 +95,10 @@ class MainActivity : AppCompatActivity() {
     private fun checkUserRoleAndLoadFragment() {
         UserDataManager.getCurrentUser()?.let { userData ->
             when (userData.role) {
-                "admin" -> changeFragment(admin_home())
-                "coordinator" -> changeFragment(coordinatorHomeFragment())
-                "student" -> changeFragment(studentHomeFragment())
-                "user" -> changeFragment(userFragment())
+                "admins" -> changeFragment(admin_home())
+                "Coordinators" -> changeFragment(coordinatorHomeFragment())
+                "Students" -> changeFragment(studentHomeFragment())
+                "users","user" -> changeFragment(userFragment())
                 else -> {
                     Log.e(TAG, "Unknown user role: ${userData.role}")
                     Toast.makeText(this, "Unknown user role", Toast.LENGTH_SHORT).show()
@@ -146,20 +149,31 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun logUserData() {
-        UserDataManager.getCurrentUser()?.let { userData ->
-            Log.d(TAG, "User Data:")
-            Log.d(TAG, "UID: ${userData.uid}")
-            Log.d(TAG, "Name: ${userData.name}")
-            Log.d(TAG, "Email: ${userData.email}")
-            Log.d(TAG, "Role: ${userData.role}")
-            Log.d(TAG, "Domain: ${userData.domain}")
-            Log.d(TAG, "Library ID: ${userData.libraryId}")
-        } ?: Log.e(TAG, "No user data available")
-    }
+//    private fun logUserData() {
+//        UserDataManager.getCurrentUser()?.let { userData ->
+//            Log.d(TAG, "User Data:")
+//            Log.d(TAG, "UID: ${userData.uid}")
+//            Log.d(TAG, "Name: ${userData.name}")
+//            Log.d(TAG, "Email: ${userData.email}")
+//            Log.d(TAG, "Role: ${userData.role}")
+//            Log.d(TAG, "Domain: ${userData.domain}")
+//            Log.d(TAG, "Library ID: ${userData.libraryId}")
+//        } ?: Log.e(TAG, "No user data available")
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
         UserDataManager.stopListening()
+    }
+    private fun setupNavHeader() {
+        // Get reference to header view
+        val headerView = binding.mainNavView.getHeaderView(0)
+        navHeaderBinding = NavHeaderBinding.bind(headerView)
+
+        // Update with user data
+        UserDataManager.getCurrentUser()?.let { userData ->
+            navHeaderBinding.textViewName.text = userData.name
+            navHeaderBinding.textViewRole.text = userData.role.capitalize()
+        }
     }
 }

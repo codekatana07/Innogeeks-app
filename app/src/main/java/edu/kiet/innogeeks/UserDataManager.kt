@@ -34,7 +34,7 @@ object UserDataManager {
             .get()
             .addOnSuccessListener { adminDoc ->
                 if (adminDoc.exists()) {
-                    userData = createUserDataFromDocument(adminDoc, uid, "admin")
+                    userData = createUserDataFromDocument(adminDoc, uid, "admins")
                     onComplete(true)
                     return@addOnSuccessListener
                 }
@@ -45,7 +45,7 @@ object UserDataManager {
                     .get()
                     .addOnSuccessListener { userDoc ->
                         if (userDoc.exists()) {
-                            userData = createUserDataFromDocument(userDoc, uid, "user")
+                            userData = createUserDataFromDocument(userDoc, uid, "users")
                             onComplete(true)
                             return@addOnSuccessListener
                         }
@@ -81,7 +81,7 @@ object UserDataManager {
                             checksCompleted++
                             if (doc.exists() && !userFound) {
                                 userFound = true
-                                userData = createUserDataFromDocument(doc, uid, "coordinator", domain.id)
+                                userData = createUserDataFromDocument(doc, uid, "Coordinators", domain.id)
                                 onComplete(true)
                             } else if (checksCompleted == totalChecks && !userFound) {
                                 onComplete(false)
@@ -96,7 +96,7 @@ object UserDataManager {
                             checksCompleted++
                             if (doc.exists() && !userFound) {
                                 userFound = true
-                                userData = createUserDataFromDocument(doc, uid, "student", domain.id)
+                                userData = createUserDataFromDocument(doc, uid, "Students", domain.id)
                                 onComplete(true)
                             } else if (checksCompleted == totalChecks && !userFound) {
                                 onComplete(false)
@@ -130,9 +130,9 @@ object UserDataManager {
         
         userData?.let { user ->
             userListener = when (user.role) {
-                "admin" -> listenToDocument("admins", uid)
-                "user" -> listenToDocument("users", uid)
-                "coordinator", "student" -> listenToDomainUser(uid, user)
+                "admins" -> listenToDocument("admins", uid)
+                "users" -> listenToDocument("users", uid)
+                "Coordinators", "Students" -> listenToDomainUser(uid, user)
                 else -> null
             }
         }
