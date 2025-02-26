@@ -1,9 +1,13 @@
 package edu.kiet.innogeeks
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.addListener
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -27,6 +31,9 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+
+        //Image Animation
+        startImageAnimation()
 
         // Check if user is already logged in
         if (auth.currentUser != null) {
@@ -164,5 +171,32 @@ class LoginActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+    private fun startImageAnimation() {
+        val fadeDuration = 1000L // 2 seconds per transition
+
+        fun fadeInOut(imageView: ImageView, delay: Long, nextAction: () -> Unit) {
+            val fadeIn = ObjectAnimator.ofFloat(imageView, "alpha", 0f, 1f).setDuration(fadeDuration)
+            val fadeOut = ObjectAnimator.ofFloat(imageView, "alpha", 1f, 0f).setDuration(fadeDuration)
+
+            val animatorSet = AnimatorSet().apply {
+                startDelay = delay
+                playSequentially(fadeIn, fadeOut)
+                addListener(onEnd = { nextAction() })
+            }
+            animatorSet.start()
+        }
+
+        fun startLoop() {
+            fadeInOut(binding.image0, 100L) {
+                fadeInOut(binding.image1, 100L) {
+                    fadeInOut(binding.image2, 100L) {
+                        startLoop() // Loop the animation sequence
+                    }
+                }
+            }
+        }
+
+        startLoop()
     }
 }

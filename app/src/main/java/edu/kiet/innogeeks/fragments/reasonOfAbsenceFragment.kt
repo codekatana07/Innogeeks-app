@@ -1,14 +1,17 @@
 package edu.kiet.innogeeks.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import edu.kiet.innogeeks.UserDataManager
 import edu.kiet.innogeeks.databinding.FragmentReasonOfAbsenceBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -21,13 +24,9 @@ class reasonOfAbsenceFragment : Fragment() {
     private var _binding: FragmentReasonOfAbsenceBinding? = null
     private val binding get() = _binding!!
     private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
-    private val userId: String by lazy {
-        FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("User must be logged in")
-    }
     private val currentDate: String by lazy {
         SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
     }
-    private var domain: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +41,19 @@ class reasonOfAbsenceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.editTextDate.text = currentDate
         binding.btnSubmit.setOnClickListener { submitReason() }
-        getStudentDetails()
+        displayUserDetails()
+    }
+    private fun displayUserDetails() {
+        val userData = UserDataManager.getCurrentUser()
+        if (userData == null) {
+            showToast("User data not available")
+            return
+        }
+
+        binding.apply {
+            labelStdName.text = "Name: ${userData.name}"
+            labelGrade.text = "Domain: ${userData.domain}"
+        }
     }
 
     private fun submitReason() {
@@ -51,16 +62,15 @@ class reasonOfAbsenceFragment : Fragment() {
             showToast("Please enter a reason")
             return
         }
-
-        if (domain == null) {
-            showToast("Please wait while loading student details")
+        val userData = UserDataManager.getCurrentUser()
+        if (userData == null) {
+            showToast("User data not available")
             return
         }
-
         val studentRef = db.collection("Domains")
-            .document(domain!!)
+            .document(userData.domain)
             .collection("Students")
-            .document(userId)
+            .document(userData.uid)
 
         studentRef.get()
             .addOnSuccessListener { document ->
@@ -69,9 +79,9 @@ class reasonOfAbsenceFragment : Fragment() {
                     val updatedReasons = existingReasons.toMutableMap().apply {
                         put(currentDate, reason)
                     }
-
                     studentRef.update("reasonOfAbsence", updatedReasons)
                         .addOnSuccessListener {
+                            hideKeyboard()
                             showToast("Reason submitted successfully")
                             binding.editTextTextMultiLine.text.clear()
                         }
@@ -89,42 +99,12 @@ class reasonOfAbsenceFragment : Fragment() {
             }
     }
 
-    private fun getStudentDetails() {
-        db.collection("Domains")
-            .get()
-            .addOnSuccessListener { domains ->
-                var studentFound = false
-                for (domainDoc in domains) {
-                    if (studentFound) break
-
-                    val currentDomain = domainDoc.id
-                    db.collection("Domains")
-                        .document(currentDomain)
-                        .collection("Students")
-                        .document(userId)
-                        .get()
-                        .addOnSuccessListener { document ->
-                            if (document.exists()) {
-                                studentFound = true
-                                domain = currentDomain
-                                binding.labelStdName.text = "Name: ${document.getString("email") ?: "N/A"}"
-                                binding.labelGrade.text = "Domain: $currentDomain"
-                                Log.d(TAG, "Student found in domain: $currentDomain")
-                            }
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e(TAG, "Error getting student details for domain $currentDomain", e)
-                        }
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e(TAG, "Error getting domains", e)
-                showToast("Failed to fetch domains: ${e.message}")
-            }
-    }
-
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     override fun onDestroyView() {

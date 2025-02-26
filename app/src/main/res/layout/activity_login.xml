@@ -7,15 +7,46 @@
     android:background="@drawable/screenbginnogeeks"
     tools:context=".LoginActivity">
 
-    <ImageView
-        android:id="@+id/animation"
+    <!-- Create a container for overlapping images -->
+    <FrameLayout
+        android:id="@+id/imageContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/img"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.7">
+
+        <ImageView
+            android:id="@+id/image0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_1" />
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:alpha="0.0"
+            android:src="@drawable/img_2" />
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:alpha="0.0"
+            android:src="@drawable/img_3" />
+
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/imageView"
@@ -42,11 +73,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="@color/white"
         app:cardBackgroundColor="#1A1A1A"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
-        android:outlineAmbientShadowColor="#FFFFFF"
-        android:outlineSpotShadowColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -159,28 +190,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+        app:layout_constraintGuide_percent="0.20" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.75" />
+
     <LinearLayout
         android:id="@+id/sign_in_google"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button_background"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3">
@@ -190,19 +222,26 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/google"
-            android:contentDescription="Button icon"/>
+            android:contentDescription="Button icon"
+            android:src="@drawable/google" />
 
         <TextView
             android:id="@+id/buttonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign in with Google"
-            android:textStyle="bold"
             android:textColor="#000000"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
