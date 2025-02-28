@@ -89,8 +89,8 @@ class personalDetailsFragment : Fragment() {
         }
         currentUser?.let { user ->
             val collectionPath = when (user.role) {
-                "admins" -> "admins"
-                "users" -> "users"
+                "admin" -> "admins"
+                "user" -> "users"
                 else -> "Domains/${user.domain}/${user.role}"
             }
 

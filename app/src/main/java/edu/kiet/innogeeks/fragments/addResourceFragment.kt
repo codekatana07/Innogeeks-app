@@ -2,6 +2,7 @@ package edu.kiet.innogeeks.fragments
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +23,7 @@ class addResourceFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
-    private val domains = listOf("android", "web2", "web3", "ar-vr", "ml", "iot")
+    private val domains = listOf("Android", "Web_2", "Web_3", "Ar-Vr", "Ml", "IoT")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +42,7 @@ class addResourceFragment : Fragment() {
 
         val currentUser = UserDataManager.getCurrentUser()
         if (currentUser != null) {
+            Log.d("addResourceFragment", "${currentUser.role} is logged in")
             setupUI(currentUser)
         } else {
             Toast.makeText(context, "User data not available", Toast.LENGTH_SHORT).show()
@@ -52,11 +54,11 @@ class addResourceFragment : Fragment() {
         setupDomainSpinner()
 
         when (userData.role) {
-            "admin", "coordinator" -> {
+            "admin", "Coordinators" -> {
                 binding.submitButton.isEnabled = true
                 binding.submitButton.setOnClickListener { addResource() }
 
-                if (userData.role == "coordinator" && userData.domain != "none") {
+                if (userData.role == "Coordinators" && userData.domain != "none") {
                     val domainIndex = domains.indexOf(userData.domain)
                     if (domainIndex != -1) {
                         binding.domainSpinner.setSelection(domainIndex)
@@ -86,7 +88,7 @@ class addResourceFragment : Fragment() {
             return
         }
 
-        if (currentUser.role != "admin" && currentUser.role != "coordinator") {
+        if (currentUser.role != "admin" && currentUser.role != "Coordinators") {
             Toast.makeText(context, "Unauthorized to add resources", Toast.LENGTH_SHORT).show()
             return
         }
