@@ -6,4 +6,5 @@
         <item name="android:statusBarColor">#0FFFFF00</item>
     </style>
 
+    <style name="Theme.Innogeeks" parent="Base.Theme.Innogeeks" />
 </resources>
