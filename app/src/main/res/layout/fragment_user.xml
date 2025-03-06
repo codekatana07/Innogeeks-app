@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/lightBlack"
     tools:context=".fragments.userFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -12,8 +13,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_margin="30dp"
-        android:textSize="24sp"
-        android:text="WELCOME USER" />
+        android:textSize="32sp"
+        android:text="WELCOME USER"
+        android:textStyle="bold"
+        android:textColor="@color/InnoDarkBlue"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,6 +24,8 @@
         android:layout_gravity="center"
         android:layout_margin="30dp"
         android:textSize="24sp"
-        android:text="Wait for your role assignment"/>
+        android:text="Wait for your role assignment"
+        android:textStyle="italic"
+        android:textColor="@color/InnoLightBlue"/>
 
 </LinearLayout>
