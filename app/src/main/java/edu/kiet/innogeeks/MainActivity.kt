@@ -1,6 +1,7 @@
 package edu.kiet.innogeeks
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
@@ -11,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.kiet.innogeeks.databinding.ActivityMainBinding
 import edu.kiet.innogeeks.databinding.NavHeaderBinding
+import edu.kiet.innogeeks.fragments.ProfileFragment
 import edu.kiet.innogeeks.fragments.admin_home
 import edu.kiet.innogeeks.fragments.coordinatorHomeFragment
 import edu.kiet.innogeeks.fragments.personalDetailsFragment
@@ -127,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navPersonalDetail -> {
-                    changeFragment(personalDetailsFragment())
+                    changeFragment(ProfileFragment())
                     binding.drawerLayout.close()
                     true
                 }
@@ -172,6 +174,15 @@ class MainActivity : AppCompatActivity() {
 
         // Update with user data
         UserDataManager.getCurrentUser()?.let { userData ->
+            if (userData.imageUrl != null) {
+                // For URL, parse to Uri and set
+                val imageUri = Uri.parse(userData.imageUrl)
+                navHeaderBinding.imageView.setImageURI(imageUri)
+            } else {
+                // For resource drawable, use setImageResource instead
+                navHeaderBinding.imageView.setImageResource(R.drawable.baseline_person_24)
+            }
+
             navHeaderBinding.textViewName.text = userData.name
             navHeaderBinding.textViewRole.text = userData.role.capitalize()
         }
