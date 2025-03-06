@@ -48,7 +48,7 @@ class addStudentFragment : Fragment() {
     // Add this new function to setup the button click listener
     private fun setupButtonClickListener() {
         binding.buttonAction.setOnClickListener {
-            assignCoordinators()
+            assignStudents()
         }
     }
 
@@ -139,21 +139,34 @@ class addStudentFragment : Fragment() {
             }
     }
 
-    private fun assignCoordinators() {
+    private fun assignStudents() {
         selectedDomain?.let { domain ->
             val batch = db.batch()
             val domainRef = db.collection("Domains").document(domain)
 
             selectedUserIds.forEach { userId ->
-                val userDetails = userDetails[userId] ?: return@forEach
+                // Get the original user details
+                val originalUserDetails = userDetails[userId] ?: return@forEach
+
+                // Create a new map with updated role field
+                val updatedUserDetails = originalUserDetails.toMutableMap().apply {
+                    this["role"] = "Students" // Change role from user to student
+                }
+
+                // Add to domain's Students collection with updated role
                 val coordinatorRef = domainRef.collection("Students").document(userId)
-                batch.set(coordinatorRef, userDetails)
+                batch.set(coordinatorRef, updatedUserDetails)
+
+                // Delete from users collection
+                val userRef = db.collection("users").document(userId)
+                batch.delete(userRef)
             }
 
             batch.commit()
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(),
-                        "Successfully assigned ${selectedUserIds.size} students to $domain",
+                        "Successfully assigned ${selectedUserIds.size} students to $domain " +
+                                "and updated their roles",
                         Toast.LENGTH_SHORT).show()
                     clearSelection()
                     // Navigate back to admin dashboard
@@ -166,7 +179,6 @@ class addStudentFragment : Fragment() {
                 }
         }
     }
-
     private fun clearSelection() {
         selectedUserIds.clear()
         userAdapter.currentList.forEach { it.isSelected = false }

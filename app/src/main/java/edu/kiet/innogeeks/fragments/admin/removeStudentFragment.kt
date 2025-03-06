@@ -45,7 +45,7 @@ class removeStudentFragment : Fragment() {
     private fun setupButtonClickListener() {
         binding.buttonAction.setOnClickListener {
             if (selectedUserIds.isNotEmpty() && selectedDomain != null) {
-                removeCoordinators()
+                removeStudents()
             } else {
                 Toast.makeText(requireContext(), "Please select coordinators to remove", Toast.LENGTH_SHORT).show()
             }
@@ -76,7 +76,7 @@ class removeStudentFragment : Fragment() {
                         selectedDomain = domains[position]
                         updateActionButton()
                         // Fetch coordinators for the selected domain
-                        fetchCoordinators(selectedDomain!!)
+                        fetchStudents(selectedDomain!!)
                     }
                     override fun onNothingSelected(parent: AdapterView<*>?) {
                         selectedDomain = null
@@ -117,7 +117,7 @@ class removeStudentFragment : Fragment() {
         binding.buttonAction.isEnabled = selectedUserIds.isNotEmpty() && selectedDomain != null
     }
 
-    private fun fetchCoordinators(domain:String) {
+    private fun fetchStudents(domain:String) {
         selectedUserIds.clear()
         updateSelectionCount()
         db.collection("Domains")
@@ -148,7 +148,7 @@ class removeStudentFragment : Fragment() {
             }
     }
 
-    private fun removeCoordinators() {
+    private fun removeStudents() {
         selectedDomain?.let { domain ->
             binding.buttonAction.isEnabled = false // Disable button while processing
 
@@ -162,7 +162,13 @@ class removeStudentFragment : Fragment() {
                 if (studentDetails != null) {
                     // First, save the coordinator details to users collection
                     val userRef = db.collection("users").document(userId)
-                    batch.set(userRef, studentDetails)
+                    val updatedUserDetails = studentDetails.toMutableMap().apply {
+                        // Change role back to "user" if it exists
+                        if (containsKey("role")) {
+                            this["role"] = "user"
+                        }
+                    }
+                    batch.set(userRef, updatedUserDetails)
 
                     // Then delete from domain's Coordinators subcollection
                     val coordinatorRef = domainRef.collection("Students").document(userId)
@@ -179,7 +185,7 @@ class removeStudentFragment : Fragment() {
                     ).show()
 
                     // Refresh the coordinator list
-                    fetchCoordinators(domain)
+                    fetchStudents(domain)
 
                     // Clear selection
                     clearSelection()
