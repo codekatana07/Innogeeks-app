@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardElevation="4dp"
+    android:backgroundTint="#F1000000"
     app:cardCornerRadius="8dp">
 
     <LinearLayout
@@ -31,6 +32,7 @@
                 android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#DEFFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
 
@@ -38,6 +40,7 @@
                 android:id="@+id/text_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp"/>
         </LinearLayout>

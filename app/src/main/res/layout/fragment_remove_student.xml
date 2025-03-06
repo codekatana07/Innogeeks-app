@@ -5,17 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@drawable/bkg_gradient">
 
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
+        android:background="#F1000000"
         android:paddingHorizontal="16dp"
         android:paddingVertical="12dp"
         android:text="Remove Students"
-        android:textColor="@color/white"
+        android:textColor="@color/InnoDarkBlue"
         android:textSize="20sp"
         android:textStyle="bold"
         android:elevation="4dp"
@@ -41,7 +41,7 @@
         android:layout_margin="16dp"
         android:text="Selected Students: 0"
         android:textSize="16sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/spinnerDomain"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -64,10 +64,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Assign as Users"
+        android:text="Remove User"
         android:enabled="false"
         android:padding="12dp"
         android:textSize="16sp"
+        android:backgroundTint="@color/InnoDarkBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

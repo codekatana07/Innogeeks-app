@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@drawable/bkg_gradient">
 
     <TextView
         android:id="@+id/titleText"
@@ -13,7 +13,7 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/cabin"
         android:text="Mark Attendance"
-        android:textColor="#1A237E"
+        android:textColor="@color/InnoMidBlue"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,6 +33,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#F1000000"
             android:padding="16dp">
 
             <TextView
@@ -70,7 +71,6 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@android:color/white"
         android:clipToPadding="false"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@id/btnSubmit"
@@ -84,7 +84,7 @@
         android:layout_height="56dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/lightGreen"
+        android:backgroundTint="@color/InnoDarkBlue"
         android:fontFamily="@font/cabin"
         android:text="Submit Attendance"
         android:textSize="16sp"

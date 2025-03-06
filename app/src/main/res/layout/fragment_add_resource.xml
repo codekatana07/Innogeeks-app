@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@drawable/bkg_gradient"
     android:padding="16dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Select Domain"
+        android:textColor="@color/InnoMidBlue"
         android:textSize="16sp"
         android:layout_marginBottom="8dp"/>
 
@@ -16,24 +19,29 @@
         android:id="@+id/domainSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#282828"
         android:layout_marginBottom="16dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        app:boxStrokeColor="@color/InnoMidBlue"
+        app:hintTextColor="@color/InnoLightBlue">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/titleInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Resource Title" />
+            android:hint="Resource Title"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        app:boxStrokeColor="@color/InnoMidBlue"
+        app:hintTextColor="@color/InnoLightBlue">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/descriptionInput"
@@ -41,12 +49,14 @@
             android:layout_height="wrap_content"
             android:hint="Description"
             android:inputType="textMultiLine"
-            android:minLines="3" />
+            android:minLines="3"
+            android:textCursorDrawable="@drawable/custom_cursor"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/submitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/InnoDarkBlue"
         android:text="Add Resource" />
 </LinearLayout>

@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#17e682">
+    android:background="@drawable/bkg_gradient">
 
     <!-- Top View Background -->
     <View
         android:id="@+id/top_view"
         android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:background="@drawable/bg_view"
+        android:layout_height="180dp"
+        android:background="@drawable/custom_header_design"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -21,11 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dashboard"
-        android:textColor="@color/black"
+        android:textColor="#E2FFFFFF"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@+id/top_view"
-        app:layout_constraintBottom_toBottomOf="@+id/top_view"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -34,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(Admin)"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -47,6 +46,7 @@
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:foregroundGravity="center"
         app:layout_constraintTop_toBottomOf="@+id/top_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,13 +76,15 @@
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/removeuser" />
+                        android:src="@drawable/removeuser"
+                        app:tint="@color/InnoLightBlue" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="Remove Teacher"
-                        android:textColor="#0f0f0f"
+                        android:textColor="@color/InnoMidBlue"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -108,13 +110,15 @@
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/adduser" />
+                        android:src="@drawable/adduser"
+                        app:tint="@color/InnoLightBlue"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Add Teachers"
-                        android:textColor="#0f0f0f"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/InnoMidBlue"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -140,13 +144,15 @@
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/removeuser" />
+                        android:src="@drawable/removeuser"
+                        app:tint="@color/InnoLightBlue"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Remove Students"
-                        android:textColor="#0f0f0f"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/InnoMidBlue"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -172,13 +178,15 @@
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/addstudent" />
+                        android:src="@drawable/addstudent"
+                        app:tint="@color/InnoLightBlue"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Add Students"
-                        android:textColor="#0f0f0f"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/InnoMidBlue"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -203,13 +211,15 @@
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/add_resources_24" />
+                        android:src="@drawable/add_resources_24"
+                        app:tint="@color/InnoLightBlue"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Add Resources"
-                        android:textColor="#0f0f0f"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/InnoMidBlue"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
