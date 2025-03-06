@@ -161,11 +161,19 @@ class removeTeacherFragment : Fragment() {
                 val coordinatorDetails = userDetails[userId]
 
                 if (coordinatorDetails != null) {
-                    // First, save the coordinator details to users collection
-                    val userRef = db.collection("users").document(userId)
-                    batch.set(userRef, coordinatorDetails)
+                    // Create a mutable copy of coordinator details to modify
+                    val updatedUserDetails = coordinatorDetails.toMutableMap().apply {
+                        // Change role back to "user" if it exists
+                        if (containsKey("role")) {
+                            this["role"] = "user"
+                        }
+                    }
 
-                    // Then delete from domain's Coordinators subcollection
+                    // Save the updated coordinator details to users collection
+                    val userRef = db.collection("users").document(userId)
+                    batch.set(userRef, updatedUserDetails)
+
+                    // Delete from domain's Coordinators subcollection
                     val coordinatorRef = domainRef.collection("Coordinators").document(userId)
                     batch.delete(coordinatorRef)
                 }
@@ -205,8 +213,7 @@ class removeTeacherFragment : Fragment() {
                     Log.e("removeCoordinators", "Error moving coordinators", e)
                 }
         }
-    }
-    private fun clearSelection() {
+    }    private fun clearSelection() {
         selectedUserIds.clear()
         userAdapter.currentList.forEach { it.isSelected = false }
         userAdapter.notifyDataSetChanged()
