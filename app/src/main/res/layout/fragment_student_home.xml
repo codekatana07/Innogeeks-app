@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="@drawable/bkg_gradient"
     tools:context=".fragments.studentHomeFragment">
 
     <View
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Dashboard"
-        android:textColor="@color/black"
+        android:textColor="#CFFFFFFF"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="(Student)"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,6 +63,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#1A1A1A"
                     android:padding="16dp">
 
                     <TextView
@@ -70,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Attendance Overview"
-                        android:textColor="#1A237E"
+                        android:textColor="@color/InnoMidBlue"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:progress="75"
-                        app:indicatorColor="#4CAF50"
+                        app:indicatorColor="@color/InnoLightBlue"
                         app:indicatorSize="150dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +95,7 @@
                         android:id="@+id/percentageText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#4CAF50"
+                        android:textColor="@color/InnoMidBlue"
                         android:textSize="24sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/attendanceProgress"
@@ -108,7 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:textColor="#424242"
+                        android:textColor="@color/white"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -131,6 +132,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
+                    android:background="#1A1A1A"
                     android:padding="16dp">
 
                     <ImageView
@@ -143,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Submit absence reason"
-                        android:textColor="#1A237E"
+                        android:textColor="@color/InnoDarkBlue"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -162,6 +164,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#1A1A1A"
                     android:orientation="vertical">
 
                     <TextView
@@ -170,7 +173,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:text="Learning Resources"
-                        android:textColor="#1A237E"
+                        android:textColor="@color/InnoMidBlue"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
